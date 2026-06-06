@@ -422,6 +422,198 @@ footer {
   color: var(--text-muted);
 }
 
+/* 9-1. 서브페이지 전용 프리미엄 아티클 및 본문 스타일 */
+.full-width-wrapper {
+  flex: 1;
+  max-width: 840px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem 2rem;
+}
+
+.article-header {
+  margin-bottom: 3.5rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.article-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+.article-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.3;
+  margin-bottom: 0.8rem;
+  color: var(--text-primary);
+}
+
+.article-body {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.article-body p {
+  line-height: 1.85;
+}
+
+.article-body strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.article-body h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 카드형 그리드 리스트 (소개 페이지용) */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin: 1rem 0;
+}
+
+.about-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition-smooth);
+}
+
+.about-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--text-primary);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.about-card strong {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* 폼 스타일 프리미엄 개편 (Contact용) */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  margin-top: 2.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.form-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input, .form-textarea {
+  font-family: var(--font-sans);
+  padding: 0.9rem 1.2rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .form-input:focus, 
+[data-theme="dark"] .form-textarea:focus {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+.form-textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.submit-btn {
+  font-family: var(--font-sans);
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+  border: none;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  align-self: flex-start;
+  box-shadow: var(--card-shadow);
+}
+
+.submit-btn:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+#form-success-message {
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  margin-top: 2.5rem;
+}
+
+#form-success-message h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
 /* 10. 로딩 및 반응형 스타일 */
 .loading-spinner {
   text-align: center;

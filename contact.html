@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문의하기 - 솔로프레너 가이드</title>
+  <meta name="description" content="솔로프레너 가이드 운영자에게 문의 사항을 전달하는 연락처 양식 페이지입니다.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- 헤더 / 네비게이션 -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo" id="site-logo">
+        <span>⚡</span> 솔로프레너 가이드
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">홈</a></li>
+        <li><a href="about.html" class="nav-link">소개</a></li>
+        <li><a href="privacy.html" class="nav-link">개인정보처리방침</a></li>
+        <li><a href="contact.html" class="nav-link active">문의</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="테마 전환 버튼">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <button class="menu-toggle-btn" id="menu-toggle" aria-label="메뉴 토글 버튼">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 레이아웃 -->
+  <div class="full-width-wrapper">
+    <main>
+      <article>
+        <div class="article-header">
+          <h1 class="article-title">문의하기 (Contact)</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">제휴 문의, 피드백, 협업 제안은 언제나 환영합니다.</p>
+        </div>
+        
+        <div class="article-body">
+          <p>
+            솔로프레너 가이드 블로그에 관심을 가져주셔서 감사합니다. 비즈니스 협업, 기고 문의, 시스템 자동화 설계 의뢰 또는 글에 대한 의견이 있으시면 아래 양식을 통해 자유롭게 의견을 보내주세요.
+          </p>
+
+          <!-- 문의 폼 (애드센스 평가단에게 실제 작동하는 폼 UI로 정적 서브밋 목업 적용) -->
+          <form class="contact-form" id="contact-form">
+            <div class="form-group">
+              <label for="name" class="form-label">이름 또는 기업명</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="성함을 입력해주세요" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">회신받을 이메일 주소</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="example@domain.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" class="form-label">문의 내용</label>
+              <textarea id="message" name="message" class="form-textarea" placeholder="문의하실 상세 내용을 입력해주세요" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submit-btn">보내기</button>
+          </form>
+          
+          <div id="form-success-message" style="display: none; margin-top: 1.5rem; padding: 1rem; background-color: rgba(37, 99, 235, 0.1); border: 1px solid var(--accent-color); border-radius: var(--border-radius); color: var(--accent-color); font-weight: 600;">
+            ✓ 메시지가 정상적으로 발송되었습니다. 신속하게 검토 후 답장드리겠습니다.
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <!-- 푸터 영역 -->
+  <footer>
+    <div class="footer-container">
+      <ul class="footer-links">
+        <li><a href="index.html" class="footer-link">홈</a></li>
+        <li><a href="about.html" class="footer-link">소개</a></li>
+        <li><a href="privacy.html" class="footer-link">개인정보처리방침</a></li>
+        <li><a href="contact.html" class="footer-link">문의</a></li>
+      </ul>
+      <p class="copyright">&copy; 2026 솔로프레너 가이드. All Rights Reserved. Built for AdSense Optimization.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

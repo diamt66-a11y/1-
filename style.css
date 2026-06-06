@@ -1,43 +1,46 @@
 /* ==========================================================================
-   구글 애드센스 승인 최적화 블로그 - 모던 디자인 시스템 (style.css)
+   구글 애드센스 승인 최적화 블로그 - 프리미엄 디자인 시스템 (style.css)
    ========================================================================== */
 
-/* 1. 디자인 토큰 및 CSS 변수 */
+/* 1. 디자인 토큰 및 HSL 기반 프리미엄 변수 */
 :root {
-  /* Light 테마 컬러 */
-  --bg-primary: #f8fafc;
+  /* Light 테마 컬러 (Zapier의 오프화이트 & 차콜 베이스) */
+  --bg-primary: #fcfcfd;
   --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --accent-color: #2563eb;       /* 신뢰를 주는 세련된 블루 */
-  --accent-hover: #1d4ed8;
-  --border-color: #e2e8f0;
-  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(226, 232, 240, 0.8);
+  --bg-tertiary: #f4f5f6;
+  --text-primary: #121620;
+  --text-secondary: #3b4252;
+  --text-muted: #8a93a6;
+  --accent-color: #ff4f00;       /* 세련된 활력을 주는 오렌지/레드 포인트 */
+  --accent-hover: #e04500;
+  --border-color: #e6e8eb;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(230, 232, 235, 0.7);
   
-  /* 전역 레이아웃 및 폰트 */
-  --font-sans: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --border-radius: 12px;
+  /* 전역 레이아웃 및 고가독성 서체 */
+  --font-sans: 'Outfit', 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --border-radius: 16px;
+  --border-radius-sm: 8px;
 }
 
 [data-theme="dark"] {
   /* Dark 테마 컬러 */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --accent-color: #3b82f6;
-  --accent-hover: #60a5fa;
-  --border-color: #334155;
-  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
-  --glass-bg: rgba(30, 41, 59, 0.8);
-  --glass-border: rgba(51, 65, 85, 0.8);
+  --bg-primary: #0b0f19;
+  --bg-secondary: #121824;
+  --bg-tertiary: #1b2332;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --accent-color: #ff5e1a;
+  --accent-hover: #ff773b;
+  --border-color: #1e293b;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --glass-bg: rgba(18, 24, 36, 0.85);
+  --glass-border: rgba(30, 41, 59, 0.7);
 }
 
 /* 2. 리셋 및 글로벌 기본 스타일 */
@@ -52,7 +55,8 @@ html {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   scroll-behavior: smooth;
-  line-height: 1.6;
+  line-height: 1.8;
+  letter-spacing: -0.2px;
 }
 
 body {
@@ -68,20 +72,14 @@ a {
   transition: var(--transition-smooth);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--border-radius);
-}
-
 /* 3. 레이아웃 헤더 (네비게이션 바) */
 header {
   position: sticky;
   top: 0;
   z-index: 100;
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
   transition: var(--transition-smooth);
 }
@@ -89,43 +87,41 @@ header {
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: var(--accent-color);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+}
+
+.logo span {
+  color: var(--accent-color);
 }
 
 .nav-menu {
   display: flex;
-  gap: 2rem;
+  gap: 2.2rem;
   align-items: center;
   list-style: none;
 }
 
 .nav-link {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
   color: var(--text-secondary);
 }
 
 .nav-link:hover, .nav-link.active {
   color: var(--accent-color);
-}
-
-/* 컨트롤 영역 (테마 스위치 등) */
-.nav-controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .theme-toggle-btn {
@@ -139,8 +135,8 @@ header {
   align-items: center;
   justify-content: center;
   transition: var(--transition-smooth);
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
 }
 
 .theme-toggle-btn:hover {
@@ -157,34 +153,91 @@ header {
   color: var(--text-primary);
 }
 
-/* 4. 메인 컨테이너 레이아웃 */
+/* 4. Zapier 스타일 필터 바 */
+.filter-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 2rem auto 0 auto;
+  padding: 0 2rem;
+}
+
+.filter-container {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.filter-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.filter-btn:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-secondary);
+}
+
+/* 5. 메인 레이아웃 및 그리드 */
 .main-wrapper {
   flex: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 2rem 2rem 4rem 2rem;
   display: grid;
   grid-template-columns: 8fr 4fr;
-  gap: 3rem;
+  gap: 3.5rem;
 }
 
-/* 단독 레이아웃 (소개, 개인정보 등 풀 가로 사이즈 페이지용) */
-.full-width-wrapper {
-  flex: 1;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-}
-
-/* 5. 블로그 포스트 카드 그리드 */
 .posts-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
+/* 6. 구글 애드센스 홀더 프레임 */
+.adsense-placeholder {
+  background: var(--bg-tertiary);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.adsense-placeholder .ad-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.adsense-placeholder .ad-content {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* 7. 프리미엄 카드 컴포넌트 */
 .post-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -192,110 +245,131 @@ header {
   overflow: hidden;
   box-shadow: var(--card-shadow);
   transition: var(--transition-smooth);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 3fr 5fr;
+}
+
+@media (max-width: 768px) {
+  .post-card {
+    grid-template-columns: 1fr;
+  }
 }
 
 .post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px -5px rgb(0 0 0 / 0.1);
-  border-color: var(--accent-color);
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--text-primary);
 }
 
 .post-card-img {
-  height: 240px;
+  height: 100%;
+  min-height: 220px;
   background-size: cover;
   background-position: center;
-  background-color: var(--bg-tertiary);
 }
 
 .post-card-content {
-  padding: 1.75rem;
+  padding: 2.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.post-meta {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  display: flex;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.8rem;
 }
 
 .post-category {
   color: var(--accent-color);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.post-meta {
   font-size: 0.8rem;
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 1.2rem;
 }
 
 .post-title {
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.45rem;
+  font-weight: 800;
   line-height: 1.4;
+}
+
+.post-title a:hover {
+  color: var(--accent-color);
 }
 
 .post-excerpt {
   color: var(--text-secondary);
   font-size: 0.95rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.6;
 }
 
 .read-more {
   align-self: flex-start;
-  margin-top: 0.5rem;
-  font-weight: 600;
+  margin-top: 0.6rem;
+  font-weight: 700;
+  font-size: 0.9rem;
   color: var(--accent-color);
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 .read-more:hover {
   color: var(--accent-hover);
+  transform: translateX(3px);
 }
 
-/* 6. 사이드바 스타일 */
+/* 8. 사이드바 스타일 */
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 3rem;
 }
 
 .sidebar-widget {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 1.75rem;
+  padding: 2rem;
   box-shadow: var(--card-shadow);
 }
 
 .widget-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--border-color);
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
   color: var(--text-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.widget-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-color);
 }
 
 .category-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.9rem;
 }
 
 .category-item a {
   display: flex;
   justify-content: space-between;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .category-item a:hover {
@@ -304,59 +378,17 @@ header {
 
 .category-count {
   background: var(--bg-tertiary);
-  padding: 0.1rem 0.6rem;
+  padding: 0.15rem 0.7rem;
   border-radius: 20px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.recent-post-item {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.recent-post-item:last-child {
-  margin-bottom: 0;
-}
-
-.recent-post-thumb {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  background-size: cover;
-  background-position: center;
-  background-color: var(--bg-tertiary);
-  flex-shrink: 0;
-}
-
-.recent-post-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.25rem;
-}
-
-.recent-post-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.recent-post-date {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
 
-/* 7. 푸터 (Footer) */
+/* 9. 푸터 (Footer) */
 footer {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   margin-top: auto;
 }
 
@@ -366,18 +398,18 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  text-align: center;
+  gap: 1.75rem;
 }
 
 .footer-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   list-style: none;
 }
 
 .footer-link {
   font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-secondary);
 }
 
@@ -390,126 +422,29 @@ footer {
   color: var(--text-muted);
 }
 
-/* 8. 폼 스타일 (Contact용) */
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-label {
-  font-weight: 600;
-  font-size: 0.9rem;
+/* 10. 로딩 및 반응형 스타일 */
+.loading-spinner {
+  text-align: center;
+  padding: 4rem;
   color: var(--text-secondary);
-}
-
-.form-input, .form-textarea {
-  font-family: var(--font-sans);
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: var(--transition-smooth);
-}
-
-.form-input:focus, .form-textarea:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.form-textarea {
-  min-height: 150px;
-  resize: vertical;
-}
-
-.submit-btn {
-  font-family: var(--font-sans);
-  background: var(--accent-color);
-  color: #ffffff;
-  border: none;
-  padding: 0.85rem 1.5rem;
   font-weight: 600;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  align-self: flex-start;
 }
 
-.submit-btn:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-/* 9. 문서 본문 레이아웃 (정적 포스트 & 소개 & 개인정보처리방침) */
-.article-header {
-  margin-bottom: 2rem;
-}
-
-.article-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1.3;
-  margin-bottom: 1rem;
-}
-
-.article-body {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.article-body h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-top: 1.5rem;
-}
-
-.article-body p {
-  line-height: 1.8;
-}
-
-.article-body ul, .article-body ol {
-  padding-left: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* 10. 반응형 미디어 쿼리 */
 @media (max-width: 968px) {
   .main-wrapper {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .nav-menu {
-    display: none; /* 모바일 메뉴 활성화 시 JS로 제어 */
+    display: none;
   }
-  
   .menu-toggle-btn {
     display: block;
   }
-  
   .nav-container {
-    padding: 1rem;
-  }
-  
-  .article-title {
-    font-size: 1.8rem;
+    padding: 1rem 1.5rem;
   }
 }

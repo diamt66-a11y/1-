@@ -68,68 +68,31 @@
   <!-- 메인 레이아웃 -->
   <div class="main-wrapper">
     
+    <!-- Zapier 스타일 카테고리 필터 바 -->
+    <div class="filter-wrapper">
+      <div class="filter-container" id="category-filter-bar">
+        <button class="filter-btn active" data-category="all">전체보기</button>
+        <button class="filter-btn" data-category="비즈니스">비즈니스 전략</button>
+        <button class="filter-btn" data-category="수익화">디지털 수익화</button>
+        <button class="filter-btn" data-category="기획">IT 자동화 기획</button>
+        <button class="filter-btn" data-category="일반">기타 가이드</button>
+      </div>
+    </div>
+    
     <!-- 블로그 포스트 리스트 영역 (본문) -->
     <main>
+      <!-- 상단 구글 애드센스 세련된 인라인 플레이스홀더 광고 -->
+      <div class="adsense-placeholder top-ad" id="top-ads-frame">
+        <span class="ad-label">SPONSORED ADVERTISEMENT</span>
+        <div class="ad-content">
+          <p>구글 애드센스 광고 영역 (수익 극대화 레이아웃)</p>
+        </div>
+      </div>
+
       <div class="posts-grid">
         
-        <!-- 포스트 1 -->
-        <article class="post-card">
-          <div class="post-card-img" style="background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-          <div class="post-card-content">
-            <span class="post-category">비즈니스</span>
-            <div class="post-meta">
-              <span>작성일: 2026-06-05</span>
-              <span>작성자: 솔로프레너</span>
-            </div>
-            <h2 class="post-title">
-              <a href="#">1인 기업가가 시스템 자동화를 반드시 구축해야 하는 3가지 이유</a>
-            </h2>
-            <p class="post-excerpt">
-              시간이 곧 자산인 1인 기업가(솔로프레너)에게 자동화 시스템 구축은 필수 조건입니다. 마케팅 이메일 발송, 고객 리드 수집, 그리고 결제 시스템 처리까지 자동으로 굴러가는 비즈니스의 첫 단추를 채우는 전략적 프레임워크를 설명합니다.
-            </p>
-            <a href="#" class="read-more">자세히 읽기 →</a>
-          </div>
-        </article>
-
-        <!-- 포스트 2 -->
-        <article class="post-card">
-          <div class="post-card-img" style="background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
-          <div class="post-card-content">
-            <span class="post-category">수익화</span>
-            <div class="post-meta">
-              <span>작성일: 2026-06-04</span>
-              <span>작성자: 솔로프레너</span>
-            </div>
-            <h2 class="post-title">
-              <a href="#">구글 애드센스 승인 성공률을 높이는 고품질 텍스트 작성 원칙</a>
-            </h2>
-            <p class="post-excerpt">
-              구글 애드센스 심사는 검색 사용자에게 가치 있는 오리지널 텍스트 콘텐츠가 충분한지 검증하는 과정입니다. 구글 서치엔진이 좋아하는 1,500자 이상의 정보성 글쓰기 요령과 필수 태그 구성 방법을 소개합니다.
-            </p>
-            <a href="#" class="read-more">자세히 읽기 →</a>
-          </div>
-        </article>
-
-        <!-- 포스트 3 -->
-        <article class="post-card">
-          <div class="post-card-img" style="background-image: linear-gradient(135deg, #ebbba7 0%, #cfc7f8 100%);"></div>
-          <div class="post-card-content">
-            <span class="post-category">기획</span>
-            <div class="post-meta">
-              <span>작성일: 2026-06-03</span>
-              <span>작성자: 솔로프레너</span>
-            </div>
-            <h2 class="post-title">
-              <a href="#">자신의 지식 콘텐츠를 수익성 높은 디지털 제품으로 패키징하는 전략</a>
-            </h2>
-            <p class="post-excerpt">
-              노하우 PDF 전자책부터 비디오 강의 코칭까지, 개인이 가치 있는 전문 기술과 지식을 디지털 상품화하는 5단계 프로세스를 배웁니다. 리스크 없이 무자본으로 시작할 수 있는 최적의 툴도 추천해 드립니다.
-            </p>
-            <a href="#" class="read-more">자세히 읽기 →</a>
-          </div>
-        </article>
-
-      </div>
+        <!-- 동적으로 자바스크립트가 로드합니다 (posts.json 기반) -->
+        <div class="loading-spinner">데이터를 불러오는 중입니다...</div>
     </main>
 
     <!-- 사이드바 영역 -->

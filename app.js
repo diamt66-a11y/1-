@@ -81,8 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. 동적 블로그 포스트 로드 및 렌더링 기능 추가
+  // 4. 동적 블로그 포스트 로드, 렌더링 및 카테고리 필터 기능 추가
   const postsGrid = document.querySelector('.posts-grid');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  let allPosts = []; // 전체 글 보관용 전역 버퍼
   
   if (postsGrid) {
     fetch('posts.json')
@@ -93,24 +95,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return response.json();
       })
       .then(posts => {
-        renderPosts(posts);
+        allPosts = posts;
+        renderPosts(allPosts); // 첫 기동 시에는 전체 보기 렌더링
+        setupFilterEvents(); // 필터 이벤트 리스너 세팅
       })
       .catch(error => {
         console.error('Error loading posts:', error);
         postsGrid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
-            <p style="font-size: 1.2rem; margin-bottom: 1rem;">⚠️ 블로그 포스트를 불러올 수 없습니다.</p>
-            <small style="color: var(--accent-color);">데이터 파일을 확인해 주세요.</small>
+          <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-secondary);">
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">⚠️ 블로그 포스트를 불러올 수 없습니다.</p>
+            <small style="color: var(--accent-color);">로컬 데이터 posts.json 상태를 확인해 주세요.</small>
           </div>
         `;
       });
   }
 
   function renderPosts(posts) {
-    postsGrid.innerHTML = ''; // 기존 하드코딩된 목록 제거
+    postsGrid.innerHTML = ''; // 기존 콘텐츠 혹은 로딩 스피너 제거
 
     if (posts.length === 0) {
-      postsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 3rem;">아직 작성된 글이 없습니다.</p>';
+      postsGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-secondary);">
+          <p style="font-size: 1.1rem; font-weight: 600;">아직 이 카테고리에 등록된 글이 없습니다.</p>
+        </div>
+      `;
       return;
     }
 
@@ -139,14 +147,35 @@ document.addEventListener('DOMContentLoaded', () => {
       postsGrid.appendChild(article);
     });
 
-    // 글 클릭 시 팝업 혹은 동적 뷰 구현 가능 (여기서는 우선 모달/알림이나 상세 영역 스위치 준비)
+    // 글 상세 읽기 팝업 연동
     document.querySelectorAll('.post-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const postId = e.target.getAttribute('data-id');
         const clickedPost = posts.find(p => p.id == postId);
         if (clickedPost) {
-          alert(`✏️ [${clickedPost.title}]\n\n본문 내용:\n${clickedPost.content}`);
+          alert(`✏️ [${clickedPost.title}]\n\n본문 내용:\n${clickedPost.content.replace(/<[^>]*>/g, '')}`);
+        }
+      });
+    });
+  }
+
+  // 필터 클릭 이벤트 바인딩
+  function setupFilterEvents() {
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // 기존 액티브 클래스 제거 및 신규 지정
+        filterButtons.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+
+        const category = e.target.getAttribute('data-category');
+
+        if (category === 'all') {
+          renderPosts(allPosts);
+        } else {
+          // 일치하는 카테고리만 필터링하여 출력
+          const filtered = allPosts.filter(post => post.category === category);
+          renderPosts(filtered);
         }
       });
     });

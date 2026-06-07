@@ -453,7 +453,7 @@ def scan_and_process_google_drive():
         try:
             # 안전하게 인코딩 처리하며 파일 읽기
             content = ""
-            for encoding in ['utf-8', 'cp949', 'euc-kr']:
+            for encoding in ['utf-16', 'utf-8', 'cp949', 'euc-kr']:
                 try:
                     with open(file_path, 'r', encoding=encoding) as f:
                         content = f.read().strip()

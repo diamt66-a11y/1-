@@ -4,6 +4,7 @@ import json
 import requests
 import google.generativeai as genai
 import time
+import shutil
 
 # ==========================================================================
 # 1씤 湲곗뾽 뿉씠쟾듃 떆뒪뀥 솚寃 꽕젙 (蹂댁븞긽 .env 뙆씪濡쒕꽣 濡쒕뱶)
@@ -474,8 +475,8 @@ def scan_and_process_google_drive():
                 process_drive_file_to_post(file_path, content)
             else:
                 print(f"-> [AI 판별] SKIP: '{basename}' 은 개인 메모/일반 텍스트로 판별되어 발행을 제외합니다.")
-                # 중복 검사를 방지하기 위해 일반 메모도 Processed 처리하여 마킹해둡니다.
-                mark_file_as_processed(file_path)
+                # 중복 검사를 방지하기 위해 일반 메모도 테마 분류하여 이동합니다.
+                archive_and_classify_file(file_path, is_uploaded=False, raw_content=content)
                 
         except Exception as e:
             print(f"[Drive Scan ERROR] '{basename}' 처리 중 에러 발생: {e}")
@@ -556,10 +557,75 @@ def process_drive_file_to_post(file_path, raw_content):
         save_local_file(editor_data, "posts.json")
         print(f"-> [AI Pipeline SUCCESS] '{filename}'이 성공적으로 가공되어 Vercel 라이브 뷰에 즉시 반영되었습니다!")
             
-        # 완료 처리 마킹
-        mark_file_as_processed(file_path)
+        # 완료 처리 마킹 (블로그 업로드 완료 전용 폴더 이동)
+        archive_and_classify_file(file_path, is_uploaded=True)
     except Exception as e:
         print(f"[AI Pipeline ERROR] '{filename}' 재가공 실패: {e}")
+
+# AI가 주제별로 드라이브 폴더명을 결정하는 함수
+def determine_category_folder(filename, content):
+    prompt = f"""
+    당신은 구글 드라이브 파일 정리 비서입니다.
+    제시된 텍스트 내용 및 파일명을 분석하여, 이 파일의 주제에 가장 잘 어울리는 폴더명을 한글로 결정하세요.
+    
+    [분류 가이드]
+    - IT 자동화 관련: IT_자동화
+    - 비즈니스 전략, 1인 창업 관련: 비즈니스_전략
+    - 애드센스, 수익화 관련: 디지털_수익화
+    - 기타 일반 주제, 개인 메모, 낙서: 일반_메모
+    
+    [대상 문서]
+    파일명: {filename}
+    본문 내용 일부:
+    {content[:1000]}
+    
+    [출력 규칙]
+    반드시 위에 나열된 4가지 폴더명(IT_자동화, 비즈니스_전략, 디지털_수익화, 일반_메모) 중 하나만 응답하세요. 다른 부가 설명은 절대 하지 마세요.
+    """
+    try:
+        response = safe_generate("gemini-2.5-flash", prompt)
+        result = response.text.strip().replace("`", "").replace(" ", "").strip()
+        valid_folders = ["IT_자동화", "비즈니스_전략", "디지털_수익화", "일반_메모"]
+        for vf in valid_folders:
+            if vf in result:
+                return vf
+        return "일반_메모"
+    except Exception as e:
+        print(f"[AI Category Folder Selector WARNING] {e}")
+        return "일반_메모"
+
+# 업로드 완료된 파일 및 일반 메모 분류 이동 함수
+def archive_and_classify_file(file_path, is_uploaded=False, raw_content=""):
+    drive_path = "G:\\내 드라이브"
+    if not os.path.exists(drive_path):
+        print("[Drive Organizer WARNING] 구글 드라이브 경로가 존재하지 않아 분류 이동을 건너뜁니다.")
+        return
+        
+    base_name = os.path.basename(file_path)
+    
+    try:
+        if is_uploaded:
+            target_folder = os.path.join(drive_path, "블로그_업로드_완료")
+        else:
+            folder_name = determine_category_folder(base_name, raw_content)
+            target_folder = os.path.join(drive_path, folder_name)
+            
+        if not os.path.exists(target_folder):
+            os.makedirs(target_folder)
+            
+        target_path = os.path.join(target_folder, base_name)
+        
+        # 파일명 중복 회피
+        if os.path.exists(target_path):
+            name, ext = os.path.splitext(base_name)
+            target_path = os.path.join(target_folder, f"{name}_{int(time.time())}{ext}")
+            
+        if os.path.exists(file_path):
+            shutil.move(file_path, target_path)
+            print(f"[Drive Organizer] '{base_name}' 파일을 '{os.path.basename(target_folder)}' 폴더로 분류 이동 완료했습니다.")
+    except Exception as e:
+        print(f"[Drive Organizer WARNING] '{base_name}' 파일 분류 이동 실패: {e}")
+
 def mark_file_as_processed(file_path):
     dir_name = os.path.dirname(file_path)
     base_name = os.path.basename(file_path)

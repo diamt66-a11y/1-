@@ -16,13 +16,14 @@
   <meta property="og:description" content="1인 기업가(솔로프레너)를 위한 비즈니스 전략, IT 자동화, 구글 애드센스 및 수익 다각화 노하우 공유 블로그.">
   <meta property="og:url" content="https://example.com/">
   
-  <!-- 구글 폰트 및 스타일시트 -->
+  <!-- 프리미엄 폰트 (Pretendard & Outfit) -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   
-  <!-- 구조화된 데이터 (JSON-LD) - 구글 검색 로봇 친화성 강화 -->
+  <!-- 구조화된 데이터 (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -55,7 +56,6 @@
       
       <div class="nav-controls">
         <button class="theme-toggle-btn" id="theme-toggle" aria-label="테마 전환 버튼">
-          <!-- 해/달 아이콘 (CSS/JS로 제어) -->
           <span id="theme-icon">🌙</span>
         </button>
         <button class="menu-toggle-btn" id="menu-toggle" aria-label="메뉴 토글 버튼">
@@ -89,22 +89,26 @@
         </div>
       </div>
 
+      <!-- 히어로 피처드 포스트 영역 -->
+      <div class="featured-post-area" id="featured-post-area"></div>
+
+      <!-- 일반 포스트 그리드 -->
       <div class="posts-grid">
-        
-        <!-- 동적으로 자바스크립트가 로드합니다 (posts.json 기반) -->
         <div class="loading-spinner">데이터를 불러오는 중입니다...</div>
+      </div>
     </main>
 
     <!-- 사이드바 영역 -->
     <aside class="sidebar">
       
       <!-- 프로필 위젯 -->
-      <div class="sidebar-widget">
+      <div class="sidebar-widget profile-widget">
+        <div class="profile-avatar">⚡</div>
         <h3 class="widget-title">소개</h3>
-        <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+        <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.2rem; line-height: 1.6;">
           안녕하세요! 시스템 자동화와 수익 다각화를 연구하는 1인 기업가 **솔로프레너**입니다. 가치 있는 콘텐츠와 디지털 비즈니스 혁신 정보를 나눕니다.
         </p>
-        <a href="about.html" style="color: var(--accent-color); font-weight: 600; font-size: 0.9rem;">더 보기 →</a>
+        <a href="about.html" class="widget-more-link">더 보기 →</a>
       </div>
 
       <!-- 카테고리 위젯 -->
@@ -112,13 +116,16 @@
         <h3 class="widget-title">카테고리</h3>
         <ul class="category-list">
           <li class="category-item">
-            <a href="#">비즈니스 전략 <span class="category-count">5</span></a>
+            <a href="#" class="sidebar-cat-link" data-category="비즈니스">비즈니스 전략 <span class="category-count" data-cat-count="비즈니스">0</span></a>
           </li>
           <li class="category-item">
-            <a href="#">디지털 수익화 <span class="category-count">8</span></a>
+            <a href="#" class="sidebar-cat-link" data-category="수익화">디지털 수익화 <span class="category-count" data-cat-count="수익화">0</span></a>
           </li>
           <li class="category-item">
-            <a href="#">IT 자동화 <span class="category-count">4</span></a>
+            <a href="#" class="sidebar-cat-link" data-category="기획">IT 자동화 기획 <span class="category-count" data-cat-count="기획">0</span></a>
+          </li>
+          <li class="category-item">
+            <a href="#" class="sidebar-cat-link" data-category="일반">기타 가이드 <span class="category-count" data-cat-count="일반">0</span></a>
           </li>
         </ul>
       </div>
@@ -126,19 +133,8 @@
       <!-- 최근 포스트 위젯 -->
       <div class="sidebar-widget">
         <h3 class="widget-title">최근 글</h3>
-        <div class="recent-post-item">
-          <div class="recent-post-thumb" style="background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-          <div class="recent-post-details">
-            <h4 class="recent-post-title"><a href="#">1인 기업가가 시스템 자동화를 구축해야 하는 이유</a></h4>
-            <span class="recent-post-date">2026.06.05</span>
-          </div>
-        </div>
-        <div class="recent-post-item">
-          <div class="recent-post-thumb" style="background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
-          <div class="recent-post-details">
-            <h4 class="recent-post-title"><a href="#">구글 애드센스 승인 성공률을 높이는 글쓰기</a></h4>
-            <span class="recent-post-date">2026.06.04</span>
-          </div>
+        <div id="recent-posts-list">
+          <!-- JS에서 동적 로드 -->
         </div>
       </div>
 
@@ -158,6 +154,24 @@
       <p class="copyright">&copy; 2026 솔로프레너 가이드. All Rights Reserved. Built for AdSense Optimization.</p>
     </div>
   </footer>
+
+  <!-- 포스트 상세 보기 모달 -->
+  <div id="post-modal" class="modal-overlay">
+    <div class="modal-window">
+      <button class="modal-close-btn" id="modal-close" aria-label="닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="modal-header">
+        <span class="modal-category" id="modal-category"></span>
+        <h1 class="modal-title" id="modal-title"></h1>
+        <div class="modal-meta">
+          <span id="modal-date"></span>
+          <span id="modal-author"></span>
+        </div>
+      </div>
+      <div class="modal-content" id="modal-body"></div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

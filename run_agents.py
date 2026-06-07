@@ -192,13 +192,13 @@ def run_writer(post_plan, part_number=1, total_parts=8):
          
        젣3렪 쟾슜 異쒖쿂 紐⑸줉 留덊겕뾽 洹쒓꺽:
        <ul>
-           <li><a href="https://zapier.com/blog/" target="_blank">Zapier 怨듭떇 釉붾줈洹 - Zapier Blog</a></li>
-           <li><a href="https://make.com/en/help" target="_blank">Make 怨듭떇 媛씠뱶 諛 룄留 - Make Help Center</a></li>
-           <li><a href="https://www.notion.so/help" target="_blank">Notion 궗슜옄 媛씠뱶 꽱꽣 - Notion Help Center</a></li>
-           <li><a href="https://airtable.com/guides" target="_blank">Airtable 怨듭떇 솢슜 媛씠뱶 - Airtable Guides</a></li>
-           <li><a href="https://bubble.io/blog" target="_blank">Bubble 怨듭떇 媛쒕컻 釉붾줈洹 - Bubble Blog</a></li>
-           <li><a href="https://glideapps.com/blog" target="_blank">Glide 怨듭떇 뒠넗由ъ뼹 釉붾줈洹 - Glide Blog</a></li>
-           <li><a href="https://wordpress.org/support/" target="_blank">WordPress 怨듭떇 吏썝 媛씠뱶 - WordPress Support</a></li>
+           <li><a href="https://zapier.com/blog/" target="_blank" rel="noopener">Zapier 怨듭떇 釉붾줈洹 - Zapier Blog</a></li>
+           <li><a href="https://make.com/en/help" target="_blank" rel="noopener">Make 怨듭떇 媛씠뱶 諛 룄留 - Make Help Center</a></li>
+           <li><a href="https://www.notion.so/help" target="_blank" rel="noopener">Notion 궗슜옄 媛씠뱶 꽱꽣 - Notion Help Center</a></li>
+           <li><a href="https://airtable.com/guides" target="_blank" rel="noopener">Airtable 怨듭떇 솢슜 媛씠뱶 - Airtable Guides</a></li>
+           <li><a href="https://bubble.io/blog" target="_blank" rel="noopener">Bubble 怨듭떇 媛쒕컻 釉붾줈洹 - Bubble Blog</a></li>
+           <li><a href="https://glideapps.com/blog" target="_blank" rel="noopener">Glide 怨듭떇 뒠넗由ъ뼹 釉붾줈洹 - Glide Blog</a></li>
+           <li><a href="https://wordpress.org/support/" target="_blank" rel="noopener">WordPress 怨듭떇 吏썝 媛씠뱶 - WordPress Support</a></li>
        </ul>
 
     9. 異쒕젰 寃곌낵臾쇱 닚닔 HTML 蹂몃Ц 뀓뒪듃 삎깭濡쒕쭔 諛섑솚븯꽭슂.
@@ -537,7 +537,7 @@ def process_drive_file_to_post(file_path, raw_content):
        - 핵심 장점이나 워크플로우 단계는 불릿 포인트(Bullet point) 목록을 사용해 시각적으로 일목요연하게 정리하세요.
     4. **한국 비즈니스 특화 및 신뢰성**:
        - 한국 기업 현실에 어울리는 설명으로 각색하고, 본문 맨 아래에는 공신력 있는 공식 사이트 및 연구소 주소 2개를 아래 HTML 예시 형식으로 제공하세요.
-         (예: <li><a href="https://www.mss.go.kr" target="_blank">중소벤처기업부 공식 사이트</a></li>)
+         (예: <li><a href="https://www.mss.go.kr" target="_blank" rel="noopener" rel="noopener">중소벤처기업부 공식 사이트</a></li>)
     
     출력 결과물은 순수 HTML 본문으로만 반환하세요.
     """

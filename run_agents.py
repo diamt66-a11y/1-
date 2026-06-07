@@ -1,4 +1,4 @@
-﻿# -*- coding: cp949 -*-
+# -*- coding: utf-8 -*-
 import os
 import json
 import requests

@@ -69,174 +69,105 @@ def safe_generate(model_name, prompt, max_retries=5, delay_secs=45):
 # 뿉씠쟾듃 1: 湲고쉷 뿉씠쟾듃 (Planner Agent) - 궗슜옄 8遺옉 紐⑹감 셿踰 怨좎젙
 # ==========================================================================
 def run_planner(topic, series_count=8):
-    print(f"\n[Planner] 솗젙맂 {series_count}遺옉 釉붾줈洹 떆由ъ쫰 湲고쉷븞 濡쒕뱶 以 (紐⑹감 媛뺤젣 怨좎젙)...")
+    print(f"\n[Planner] 확정된 {series_count}부작 블로그 시리즈 기획안 로드 중 (목차 강제 고정)...")
     
-    # 꽕씠踰 釉붾줈洹몄뿉 湲곕컻뻾빐 몢떊 8遺옉 紐⑹감 100% 룞씪븯寃 꽕젙
     fixed_plan = {
-        "series_title": "1씤 湲곗뾽쓽 깮궛꽦쓣 洹밸솕븯뒗 IT 옄룞솕 鍮꾧껐",
+        "series_title": "1인 기업의 생산성을 극대화하는 IT 자동화 비결",
         "posts": [
-            {
-                "part_number": 1,
-                "title": "젣1렪: 1씤 湲곗뾽 IT 옄룞솕: 吏湲덉씠 湲고쉶! 깮궛꽦 10諛 떖꽦쓽 泥リ구쓬",
-                "sections": [
-                    {"sub_title": "1씤 李쎌뾽怨 옄룞솕쓽 븘뿰꽦", "key_points": ["깮궛꽦 10諛", "떒닚 諛섎났 뾽臾 젣嫄", "肄붿뼱 엫 솗蹂"]},
-                    {"sub_title": "옄룞솕 닔떇 떎利앹쟻 洹쇨굅", "key_points": ["二 40떆媛 以 36떆媛 옄룞솕", "ROI 遺꾩꽍 媛쒖슂", "3~5뀈 옣湲 濡쒕뱶留 媛쒖슂"]}
-                ]
-            },
-            {
-                "part_number": 2,
-                "title": "젣2렪: 1씤 湲곗뾽 꽦怨 쟾왂: 옄룞솕 湲고쉶 諛쒓뎬怨 ROI 遺꾩꽍 봽젅엫썙겕",
-                "sections": [
-                    {"sub_title": "궡 鍮꾩쫰땲뒪뿉꽌 옄룞솕 寃 꽑蹂꾪븯湲", "key_points": ["끂肄붾뱶 濡쒖슦肄붾뱶 벑湲 遺꾨쪟", "궡媛 諛붾줈 븷 닔 엳뒗 寃 援щ텇"]},
-                    {"sub_title": "삁긽 鍮꾩슜 諛 떆媛 솚궛 닔떇", "key_points": ["ROI 遺꾩꽍 봽젅엫썙겕", "떆媛 솚궛", "옄룞솕 궃씠룄 議곗젅"]}
-                ]
-            },
-            {
-                "part_number": 3,
-                "title": "젣3렪: 1씤 李쎌뾽媛瑜 쐞븳 뒪留덊듃 삤뵾뒪 옄룞솕: 냼넻怨 삊뾽 슚쑉 넂뿬 깮궛꽦 洹밸솕",
-                "sections": [
-                    {"sub_title": "삊뾽 룄援 옄룞 뿰怨꾩쓽 湲곗큹", "key_points": ["끂뀡 DB 뿰룞", "뒳옓 븣由 꽕젙", "援ш 떆듃 뿰빀"]},
-                    {"sub_title": "룄援щ퀎 삁궛 媛씠뱶", "key_points": ["Zapier Make 臾대즺 븳룄", "Airtable Glide 臾대즺 뵆옖", "삁긽 썡 궗슜猷"]}
-                ]
-            },
-            {
-                "part_number": 4,
-                "title": "젣4렪: 1씤 湲곗뾽 留덉똿/쁺뾽 옄룞솕: 怨좉컼 쑀엯遺꽣 留ㅼ텧源뚯, 끂肄붾뱶 떎쟾 쟾왂",
-                "sections": [
-                    {"sub_title": "怨좉컼 由щ뱶 닔吏 諛 띁꼸 옄룞솕", "key_points": ["옖뵫럹씠吏 怨좉컼 닔吏", "씠硫붿씪 留덉똿 옄룞솕", "끂肄붾뱶 댋 뿰룞"]},
-                    {"sub_title": "씠빐異⑸룎 諛곗젣 怨듭씤 異쒖쿂 由ъ뒪듃", "key_points": ["以묒냼踰ㅼ쿂湲곗뾽遺 옄猷", "븳援뜲씠꽣궛뾽吏꾪씎썝 蹂닿퀬꽌"]}
-                ]
-            },
-            {
-                "part_number": 5,
-                "title": "젣5렪: 1씤 李쎌뾽媛瑜 쐞븳 AI 肄섑뀗痢 깮궛꽦 쁺紐: 湲고쉷遺꽣 諛쒗뻾源뚯",
-                "sections": [
-                    {"sub_title": "AI瑜 솢슜븳 肄섑뀗痢 臾댄븳 깮꽦 썙겕뵆濡쒖슦", "key_points": ["Gemini API 솢슜 湲고쉷", "珥덇퀬 옄룞 옉꽦 뀥뵆由", "釉붾줈洹 뾽濡쒕뱶 뿰룞"]},
-                    {"sub_title": "肄섑뀗痢 깮궛꽦 룄援 벑湲", "key_points": ["끂肄붾뱶 湲곕컲 뀥뵆由", "썡 삁긽 援щ룆猷"]}
-                ]
-            },
-            {
-                "part_number": 6,
-                "title": "젣6렪: 1씤 湲곗뾽 옱臾/꽭臾 옄룞솕: 룉 愿由щ꽣 꽭湲 떊怨좉퉴吏 끂肄붾뱶/濡쒖슦肄붾뱶 넄猷⑥뀡 솢슜 媛씠뱶",
-                "sections": [
-                    {"sub_title": "援궡 꽭臾 諛 슫쁺 옄룞솕 濡쒖뺄 뿰룞", "key_points": ["솃깮뒪 쟾옄꽭湲덇퀎궛꽌 뿰룞", "罹먯떆끂듃 뿰怨 諛⑸쾿", "뜑議 궪姨쒖궪 떎臾"]}
-                ]
-            },
-            {
-                "part_number": 7,
-                "title": "젣7렪: AI 鍮꾩꽌泥섎읆! 媛쒕컻 吏떇 뾾씠 濡쒖슦肄붾뱶/끂肄붾뱶 옄룞솕 留덉뒪꽣븯湲",
-                "sections": [
-                    {"sub_title": "媛쒕컻 吏떇 뾾씠 AI 鍮꾩꽌 遺젮 肄붾뵫븯湲", "key_points": ["AI 梨쀫큸 봽濡ы봽듃 肄붾뵫 諛⑸쾿", "10珥덈쭔뿉 肄붾뱶 吏쒓린"]},
-                    {"sub_title": "쎒 뒪겕옒븨 踰뺤쟻 二쇱쓽젏", "key_points": ["젙蹂댄넻떊留앸쾿 젣48議 以닔", "옉沅뚮쾿 臾대떒 닔吏 寃쎄퀬", "robots.txt 몴以"]}
-                ]
-            },
-            {
-                "part_number": 8,
-                "title": "젣8렪: 1씤 湲곗뾽 옄룞솕 떆뒪뀥 셿寃고뙋: 吏냽 媛뒫븳 꽦옣쓣 쐞븳 沅곴레 쟾왂",
-                "sections": [
-                    {"sub_title": "3~5뀈 옣湲 濡쒕뱶留듭쓽 셿꽦", "key_points": ["옄룞솕 븘궎뀓泥 떎씠뼱洹몃옩", "吏냽 媛뒫븳 鍮꾩쫰땲뒪 꽦옣 쟾왂"]}
-                ]
-            }
+            {"part_number": 1, "title": "제1편: 1인 기업 IT 자동화: 지금이 기회! 생산성 10배 달성의 첫걸음", "sections": [{"sub_title": "1인 창업과 자동화의 필연성", "key_points": ["생산성 10배"]}]},
+            {"part_number": 2, "title": "제2편: 1인 기업 성공 전략: 자동화 기회 발굴과 ROI 분석 프레임워크", "sections": [{"sub_title": "내 비즈니스에서 자동화 타겟 선별하기", "key_points": ["노코드 로우코드 등급 분류"]}]},
+            {"part_number": 3, "title": "제3편: 1인 창업가를 위한 스마트 오피스 자동화: 소통과 협업 효율 높여 생산성 극대화", "sections": [{"sub_title": "협업 도구 자동 연계의 기초", "key_points": ["노션 DB 연동"]}]},
+            {"part_number": 4, "title": "제4편: 1인 기업 마케팅/영업 자동화: 고객 유입부터 매출까지, 노코드 실전 전략", "sections": [{"sub_title": "고객 리드 수집 및 퍼널 자동화", "key_points": ["랜딩페이지 고객 수집"]}]},
+            {"part_number": 5, "title": "제5편: 1인 창업가를 위한 AI 콘텐츠 생산성 혁명: 기획부터 발행까지", "sections": [{"sub_title": "AI를 활용한 콘텐츠 무한 생성 워크플로우", "key_points": ["Gemini API 활용 기획"]}]},
+            {"part_number": 6, "title": "제6편: 1인 기업 재무/세무 자동화: 돈 관리부터 세금 신고까지 노코드/로우코드 솔루션 활용 가이드", "sections": [{"sub_title": "국내 세무 및 운영 자동화 로컬 연동", "key_points": ["홈택스 전자세금계산서 연동"]}]},
+            {"part_number": 7, "title": "제7편: AI 비서처럼! 개발 지식 없이 로우코드/노코드 자동화 마스터하기", "sections": [{"sub_title": "개발 지식 없이 AI 비서 부려 코딩하기", "key_points": ["AI 챗봇 프롬프트 코딩 방법"]}]},
+            {"part_number": 8, "title": "제8편: 1인 기업 자동화 시스템 완결판: 지속 가능한 성장을 위한 궁극 전략", "sections": [{"sub_title": "3~5년 장기 로드맵의 완성", "key_points": ["자동화 아키텍처 다이어그램"]}]}
         ]
     }
     
     if series_count < 8:
         fixed_plan["posts"] = fixed_plan["posts"][:series_count]
         
-    print("-> [Planner] 궗슜옄 솗젙 8遺옉 紐⑹감 룞湲고솕 꽦怨!")
+    print("-> [Planner] 사용자 확정 8부작 목차 동기화 성공!")
     return fixed_plan
 
 # ==========================================================================
-# 뿉씠쟾듃 2: 吏묓븘 뿉씠쟾듃 (Writer Agent)
+# 에이전트 2: 집필 에이전트 (Writer Agent)
 # ==========================================================================
 def run_writer(post_plan, part_number=1, total_parts=8):
     title = post_plan['title']
     sections = post_plan['sections']
     
-    print(f"\n[Writer] {title} ({part_number}/{total_parts}) 蹂몃Ц 吏묓븘 떆옉...")
+    print(f"\n[Writer] {title} ({part_number}/{total_parts}) 본문 집필 시작...")
     
     sections_str = ""
     for idx, sec in enumerate(sections):
-        sub_title = sec.get('sub_title') or sec.get('title') or f"꽮뀡 {idx+1}"
+        sub_title = sec.get('sub_title') or sec.get('title') or f"섹션 {idx+1}"
         key_points = sec.get('key_points') or sec.get('keywords') or []
-        sections_str += f"\n{idx+1}. 냼젣紐: {sub_title}\n   - 떎猷 궎썙뱶: {', '.join(key_points)}\n"
+        sections_str += f"\n{idx+1}. 소제목: {sub_title}\n   - 다룰 키워드: {', '.join(key_points)}\n"
         
     prompt = f"""
-    떦떊 쟾臾 湲곗닠/鍮꾩쫰땲뒪 釉붾줈洹 吏묓븘媛엯땲떎.
-    湲고쉷 뿉씠쟾듃媛 깮꽦븳 븘옒 냼젣紐⑷낵 궎썙뱶瑜 諛뷀깢쑝濡 源딆씠 엳뒗 釉붾줈洹 蹂몃Ц쓣 옉꽦븯꽭슂.
+    당신은 전문 기술/비즈니스 블로그 집필가입니다.
+    기획 에이전트가 생성한 아래 소제목과 키워드를 바탕으로 깊이 있는 블로그 본문을 작성하세요.
     
-    湲 젣紐: "{title}"
-    湲 紐⑹감 젙蹂: {sections_str}
-    뿰옱 쁽솴: 珥 {total_parts}遺옉 以 젣 {part_number}렪 湲엯땲떎.
+    글 제목: "{title}"
+    글 목차 정보: {sections_str}
+    연재 현황: 총 {total_parts}부작 중 제 {part_number}편 글입니다.
     
-    洹쒖튃:
-    1. 湲 쟾泥 遺꾨웾 理쒖냼 怨듬갚 젣쇅 1,500옄 씠긽쑝濡 湲멸퀬 븣李④쾶 옉꽦븯꽭슂.
-    2. 媛 냼젣紐⑹ 諛섎뱶떆 HTML쓽 <h2> 깭洹몃줈 媛먯떥怨, 蹂몃Ц 臾몃떒 <p> 깭洹몃 씠슜빐 떒씫쓣 援щ텇븯꽭슂.
-    3. 臾몄껜뒗 젙以묓븯怨 떊猶곌컧쓣 二쇰뒗 議대뙎留(~빀땲떎. ~엯땲떎)濡 넻씪븯꽭슂.
-    4. **(씠쟾 湲 뿰怨 諛 룆옄 닔以 젙쓽)**: 
-       - 젣1렪 꽌몢뿉 "蹂 떆由ъ쫰뒗 肄붾뵫 寃쏀뿕씠 쟾 뾾뒗 珥덈낫 1씤 李쎌뾽媛瑜 寃잛쑝濡 빀땲떎. 7렪 벑뿉꽌 떎猷⑤뒗 Python씠굹 뒪겕옒븨, RPA 벑쓽 湲곗닠 슂냼뒗 룆옄媛 媛쒕컻쓣 留덉뒪꽣븯뒗 寃껋씠 븘땲씪 AI(Gemini, ChatGPT)瑜 鍮꾩꽌泥섎읆 遺젮 寃곌낵臾쇱쓣 뼸뼱궡뒗 湲고쉷옄쟻 愿젏쓣 紐⑺몴濡 빀땲떎."瑜 紐낆떆븯꽭슂.
-       - 젣2렪 씠긽씪 寃쎌슦(part_number > 1), 蹂몃Ц 泥 踰덉㎏ 臾몃떒뿉꽌 "븵꽌 떎猷⑥뿀뜕 吏궃 룷뒪듃쓽 빑떖 媛쒕뀗쓣 湲곕컲쑝濡, 씠踰 렪뿉꽌뒗 씠瑜 뜑슧 떖솕븯怨 떎쟾뿉꽌 쟻슜븷 닔 엳뒗 뵒뀒씪븳 鍮꾧껐쓣 븣븘遊낅땲떎"씪뒗 臾몄옣쓣 옄뿰뒪읇寃 뿰寃고븯꽭슂.
-    5. **(젣2렪 蹂몃Ц 쟾슜 吏移)**: 씠 湲씠 젣2렪씪 寃쎌슦, 湲쓽 꽌몢 샊 蹂몃Ц 떆옉 떆젏뿉 룆옄瑜 뼢빐 "씠 以묒뿉꽌 궡媛 諛붾줈 뵲씪 븷 닔 엳뒗 寃 뼱뼡 嫄댁 援щ텇릺굹슂?"씪뒗 吏곴쟻씤 吏덈Ц쓣 뜕吏꽭슂. 씠뼱꽌 湲쓣 씫뒗 媛씠뱶씪씤쑝濡 "[끂肄붾뱶(No-Code)] 빆紐⑹ 샎옄꽌 利됱떆 떎뻾븯뿬 '븷 닔 엳떎'뒗 닔以쑝濡, [濡쒖슦肄붾뱶(Low-Code)] 빆紐⑹ 湲곗닠 쟾臾멸굹 옄룞솕 떆뒪뀥 뿉씠쟾듃쓽 '룄씠 븘슂븯떎'뒗 닔以"쑝濡 紐낇솗엳 벑湲됱쓣 굹늻뼱 蹂몃Ц쓣 긽꽭 꽌닠빐 二쇱꽭슂.
-    6. **(鍮꾩슜쓽 쁽떎꽦 諛 끂肄붾뱶/濡쒖슦肄붾뱶 援щ텇 諛섏쁺)**:
-       - 3렪~5렪 벑 紐⑤뱺 룄援(Zapier, Make, HubSpot, Notion 벑)瑜 뼵湲됲븷 븣, 諛섎뱶떆 媛 룄援щ쭏떎 [끂肄붾뱶] 삉뒗 [濡쒖슦肄붾뱶] 벑湲 遺꾨쪟 깭洹몃 몴湲고빐 二쇱꽭슂.
-       - 삉븳 빐떦 룄援ш "臾대즺 젣怨 踰붿쐞(Free Tier)媛 뼱뒓 젙룄씤吏, 洹몃━怨 쑀猷 寃곗젣 떆 썡 뼹留덉쓽 삁긽 鍮꾩슜씠 諛쒖깮븯뒗吏(삁: 썡 $20 꽑)"瑜 諛섎뱶떆 援ъ껜쟻쑝濡 1以 씠긽 紐낆떆븯꽭슂. (Notion DB굹 援ш 떆듃 媛숈 1씤 李쎌뾽媛 留욎땄삎 臾대즺/媛 븞룄 븿猿 젣떆븯꽭슂.)
-    7. **(6렪 諛 7렪 븳援 쁽떎 듅솕 吏移)**:
-       - 젣6렪(슫쁺/옱臾 옄룞솕): 떒닚 빐쇅 QuickBooks 쐞二 꽕紐낆 諛곗젣븯怨, 諛섎뱶떆 援꽭泥 솃깮뒪 쟾옄꽭湲덇퀎궛꽌 뿰룞, 罹먯떆끂듃(Cashnote), 뜑議/궪姨쒖궪 벑 援궡 1씤 湲곗뾽媛뱾씠 궗슜븯뒗 濡쒖뺄 옱臾/꽭臾 옄룞솕 룄援ъ 뿰怨 諛⑸쾿쓣 以묒떖쑝濡 끉由ъ쟻쑝濡 옉꽦븯꽭슂.
-       - 젣7렪(Python/RPA): Python 븰뒿 怨≪꽑뿉 빐 쁽떎쟻 븞(삁: '吏곸젒 肄붾뵫븯吏 븡怨 AI 梨쀫큸뿉寃 봽濡ы봽듃瑜 以섏꽌 10珥 留뚯뿉 肄붾뱶瑜 吏쒖삤寃 떆궎湲')쓣 諛섎뱶떆 젣떆븯꽭슂. 븘슱윭 쎒 뒪겕옒븨쓣 떎猷 떆 援궡踰뺤쟻 뀒몢由ъ씤 "젙蹂댄넻떊留앸쾿 젣48議(젙蹂댄넻떊留 移⑦빐) 諛 옉沅뚮쾿 臾대떒 닔吏 씠뒋"뿉 珥됰릺吏 븡룄濡 씠슜 빟愿怨 濡쒕큸 諛곗젣 몴以(robots.txt)쓣 以닔븯씪뒗 媛뺣젰븳 寃쎄퀬 臾멸뎄瑜 諛섎뱶떆 궫엯븯꽭슂.
-    8. **(李멸퀬옄猷 깮꽦 諛 씠빐異⑸룎 諛곗젣)**: 
-       - 蹂몃Ц 留 븯떒뿉 蹂몃Ц 二쇱젣 셿踰쏀엳 遺빀븯怨 떊猶고븷 닔 엳뒗 怨듭떇 궗씠듃 二쇱냼 2媛쒕 븘옒 HTML 삎떇쑝濡 젣怨듯븯꽭슂.
-       - 3렪쓣 젣쇅븳  룷뒪듃뿉꽌뒗 Zapier, Make 벑 긽뾽쟻/씠빐異⑸룎 슂냼瑜 셿쟾엳 諛곗젣븯怨, 떊 怨듭떊젰 엳뒗 鍮꾩쫰땲뒪 뿰援ъ냼, 以묒냼踰ㅼ쿂湲곗뾽遺, 븳援뜲씠꽣궛뾽吏꾪씎썝, W3C 몴以 媛씠뱶 벑 媛앷쟻 異쒖쿂留 궗슜빐빞 빀땲떎.
-       - 蹂몃Ц 궡슜怨 留ㅼ묶릺吏 븡뒗 옉쐞쟻 異쒖쿂뒗 젅 湲덉빀땲떎.
+    규칙:
+    1. 글 전체 분량은 최소 공백 제외 1,500자 이상으로 길고 알차게 작성하세요.
+    2. 각 소제목은 반드시 HTML의 <h2> 태그로 감싸고, 본문 문단은 <p> 태그를 이용해 단락을 구분하세요.
+    3. 문체는 정중하고 신뢰감을 주는 존댓말(~합니다. ~입니다)로 통일하세요.
+    4. **(이전 글 연계 및 독자 수준 정의)**: 
+       - 제1편 서두에 "본 시리즈는 코딩 경험이 전혀 없는 초보 1인 창업가를 타겟으로 합니다. 7편 등에서 다루는 Python이나 스크래핑, RPA 등의 기술 요소는 독자가 개발을 마스터하는 것이 아니라 AI(Gemini, ChatGPT)를 비서처럼 부려 결과물을 얻어내는 기획자적 관점을 목표로 합니다."를 명시하세요.
+       - 제2편 이상일 경우(part_number > 1), 본문 첫 번째 문단에서 "앞서 다루었던 지난 포스트의 핵심 개념을 기반으로, 이번 편에서는 이를 더욱 심화하고 실전에서 적용할 수 있는 디테일한 비결을 알아봅니다"라는 문장을 자연스럽게 연결하세요.
+    5. **(제2편 본문 전용 지침)**: 이 글이 제2편일 경우, 글의 서두 혹 본문 시작 시점에 독자를 향해 "이 중에서 내가 바로 따라 할 수 있는 타겟은 어떤 건지 구분되나요?"라는 직접적인 질문을 던지세요.
+    6. **(비용의 현실성 및 노코드/로우코드 구분 반영)**:
+       - 3편~5편 등 모든 도구(Zapier, Make, HubSpot, Notion 등)를 언급할 때, 반드시 각 도구마다 [노코드] 또는 [로우코드] 등급 분류 태그를 표기해 주세요.
+       - 또한 해당 도구가 "무료 제공 범위(Free Tier)가 어느 정도인지, 그리고 유료 결제 시 월 얼마의 예상 비용이 발생하는지(예: 월 $20 선)"를 반드시 구체적으로 1줄 이상 명시하세요.
+    7. **(6편 및 7편 한국 현실 특화 지침)**:
+       - 제6편(운영/재무 자동화): 단순 해외 QuickBooks 위주 설명은 배제하고, 반드시 국세청 홈택스 전자세금계산서 연동, 캐시노트(Cashnote), 더존/쎔(SSEM) 등 국내 1인 기업가들이 사용하는 로컬 재무/세무 자동화 도구와 연계 방법을 중심으로 현실적으로 작성하세요.
+       - 제7편(Python/RPA): Python 학습 곡선에 대한 현실적 대안을 반드시 제시하세요.
+    8. **(참고자료 생성 및 이해충돌 배제)**: 
+       - 본문 맨 하단에 본문 주제와 완벽히 부합하고 신뢰할 수 있는 공식 사이트 주소 2개를 HTML 형식으로 제공하세요.
        
-       *(삁쇅: 留뚯빟 쁽옱 벐뒗 湲씠 젣3렪씪 寃쎌슦, 湲 븯떒쓽 李멸퀬옄猷 쁺뿭뿉 븘옒 7媛쒖쓽 紐⑸줉쓣 젙솗엳 異쒕젰븯꽭슂)*
-         
-       젣3렪 쟾슜 異쒖쿂 紐⑸줉 留덊겕뾽 洹쒓꺽:
-       <ul>
-           <li><a href="https://zapier.com/blog/" target="_blank" rel="noopener">Zapier 怨듭떇 釉붾줈洹 - Zapier Blog</a></li>
-           <li><a href="https://make.com/en/help" target="_blank" rel="noopener">Make 怨듭떇 媛씠뱶 諛 룄留 - Make Help Center</a></li>
-           <li><a href="https://www.notion.so/help" target="_blank" rel="noopener">Notion 궗슜옄 媛씠뱶 꽱꽣 - Notion Help Center</a></li>
-           <li><a href="https://airtable.com/guides" target="_blank" rel="noopener">Airtable 怨듭떇 솢슜 媛씠뱶 - Airtable Guides</a></li>
-           <li><a href="https://bubble.io/blog" target="_blank" rel="noopener">Bubble 怨듭떇 媛쒕컻 釉붾줈洹 - Bubble Blog</a></li>
-           <li><a href="https://glideapps.com/blog" target="_blank" rel="noopener">Glide 怨듭떇 뒠넗由ъ뼹 釉붾줈洹 - Glide Blog</a></li>
-           <li><a href="https://wordpress.org/support/" target="_blank" rel="noopener">WordPress 怨듭떇 吏썝 媛씠뱶 - WordPress Support</a></li>
-       </ul>
-
-    9. 異쒕젰 寃곌낵臾쇱 닚닔 HTML 蹂몃Ц 뀓뒪듃 삎깭濡쒕쭔 諛섑솚븯꽭슂.
+    9. 출력 결과물은 순수 HTML 본문 텍스트 형태로만 반환하세요.
     """
     
     response = safe_generate("gemini-2.5-flash", prompt)
-    print(f"-> [Writer] {part_number}렪 蹂몃Ц 吏묓븘 셿猷!")
+    print(f"-> [Writer] {part_number}편 본문 집필 완료!")
     return response.text.strip()
 
 # ==========================================================================
-# 뿉씠쟾듃 3: 렪吏 뿉씠쟾듃 (Editor Agent)
+# 에이전트 3: 편집 에이전트 (Editor Agent)
 # ==========================================================================
 def run_editor(title, raw_content):
-    print(f"\n[Editor] {title} 蹂몃Ц 寃닔 諛 SEO 理쒖쟻솕 硫뷀 異붿텧 吏꾪뻾 以...")
+    print(f"\n[Editor] {title} 본문 검수 및 SEO 최적화 메타 추출 진행 중...")
     
     prompt = f"""
-    떦떊 釉붾줈洹 닔꽍 뿉뵒꽣씠옄 SEO 쟾臾멸엯땲떎. 
-    옉꽦맂 썝蹂 湲쓣 遺꾩꽍븯뿬 援ш 寃깋 遊뉗씠 媛옣 醫뗭븘븯뒗 理쒖쥌 諛고룷 뼇떇쑝濡 젙由ы빐 二쇱꽭슂.
+    당신은 블로그 수석 에디터이자 SEO 전문가입니다. 
+    작성된 원본 글을 분석하여 구글 검색 로봇이 가장 좋아하는 최종 배포 양식으로 정리해 주세요.
     
-    썝蹂 젣紐: "{title}"
-    썝蹂 蹂몃Ц(HTML):
+    원본 제목: "{title}"
+    원본 본문(HTML):
     {raw_content}
     
-    洹쒖튃:
-    1. 蹂몃Ц 븞뿉꽌 뼱깋븯嫄곕굹 AI媛 벖 쓷쟻씠 굹뒗 遺옄뿰뒪윭슫 臾몃㎘씠 엳떎硫 떎벉뼱 셿꽦룄 넂 븳援뼱 뀓뒪듃濡 蹂댁젙븯꽭슂. (듅엳 李멸퀬옄猷 留곹겕 HTML 援ъ“媛 源⑥吏 븡寃 蹂댁〈븯꽭슂.)
-    2. 援ш 寃깋 뿏吏꾩슜 140옄 궡쇅쓽 硫뷀 꽕紐(meta description)쓣 옉꽦븯꽭슂.
-    3. 湲뿉 깭洹몃줈 벑濡앺븷 留뚰븳 빑떖 궎썙뱶 4~5媛쒕 돹몴(,)濡 援щ텇빐 異붿텧븯꽭슂.
-    4. 寃곌낵瑜 諛섎뱶떆 븘옒 JSON 룷留룹쑝濡 異쒕젰븯꽭슂. 留덊겕떎슫 湲고샇(```json)瑜 룷븿븯吏 留먭퀬 닚닔 JSON 臾몄옄뿴留 異쒕젰븯꽭슂.
+    규칙:
+    1. 본문 안에서 어색하거나 AI가 쓴 흔적이 나는 부자연스러운 문맥이 있다면 다듬어 완성도 높은 한국어 텍스트로 보정하세요.
+    2. 구글 검색 엔진용 140자 내외의 메타 설명(meta description)을 작성하세요.
+    3. 글에 태그로 등록할 만한 핵심 키워드 4~5개를 쉼표(,)로 구분해 추출하세요.
+    4. 결과를 반드시 아래 JSON 포맷으로 출력하세요. 마크다운 기호를 포함하지 말고 순수 JSON 문자열만 출력하세요.
 
-    異쒕젰 룷留:
+    출력 포맷:
     {{
-        "final_title": "젙룉맂 理쒖쥌 젣紐",
-        "final_content": "蹂댁젙 셿猷뚮맂 蹂몃Ц HTML 쟾泥 궡슜",
-        "description": "援ш 寃깋 寃곌낵李쎌뿉 蹂댁뿬吏 븳 以 슂빟 硫뷀꽕紐",
-        "tags": ["깭洹1", "깭洹2", "깭洹3", "깭洹4"]
+        "final_title": "정돈된 최종 제목",
+        "final_content": "보정 완료된 본문 HTML 전체 내용",
+        "description": "구글 검색 결과창에 보여질 한 줄 요약 메타설명",
+        "tags": ["태그1", "태그2", "태그3", "태그4"]
     }}
     """
     
+    import re
     response = safe_generate("gemini-2.5-flash", prompt)
     
     try:
@@ -246,22 +177,20 @@ def run_editor(title, raw_content):
         else:
             clean_text = clean_text.replace("```", "").strip()
             
-        import re
         clean_text = re.sub(r'\n(?!\s*[{}"\[\]])', '\\n', clean_text)
         
         editor_data = json.loads(clean_text)
-        print("-> [Editor] 理쒖쥌 寃닔 諛 SEO 硫뷀뜲씠꽣 異붿텧 셿猷!")
+        print("-> [Editor] 최종 검수 및 SEO 메타데이터 추출 완료!")
         return editor_data
     except Exception as e:
-        print("[ERROR] [Editor] JSON 뙆떛 삤瑜 諛쒖깮. 臾몄옄뿴 媛뺤젣 蹂듦뎄 硫붿빱땲利섏쓣 媛룞빀땲떎.")
+        print("[ERROR] [Editor] JSON 파싱 오류 발생. 강제 복구 메커니즘을 가동합니다.")
         try:
-            import re
             raw_txt = response.text.strip()
             desc_match = re.search(r'"description"\s*:\s*"(.*?)"', raw_txt, re.DOTALL)
             title_match = re.search(r'"final_title"\s*:\s*"(.*?)"', raw_txt, re.DOTALL)
             content_match = re.search(r'"final_content"\s*:\s*"(.*?)"', raw_txt, re.DOTALL)
             
-            desc_val = desc_match.group(1).replace('\n', ' ') if desc_match else "SEO 理쒖쟻솕 룷뒪똿엯땲떎."
+            desc_val = desc_match.group(1).replace('\n', ' ') if desc_match else "SEO 최적화 포스팅입니다."
             title_val = title_match.group(1) if title_match else title
             content_val = content_match.group(1) if content_match else raw_content
             
@@ -269,17 +198,16 @@ def run_editor(title, raw_content):
                 "final_title": title_val,
                 "final_content": content_val,
                 "description": desc_val,
-                "tags": ["IT 옄룞솕", "깮궛꽦 뼢긽", "1씤 湲곗뾽"]
+                "tags": ["IT 자동화", "생산성 향상", "1인 기업"]
             }
-            print("-> [Editor] 蹂듦뎄 硫붿빱땲利섏쓣 넻빐 理쒖쥌 뜲씠꽣 蹂듭썝 꽦怨!")
+            print("-> [Editor] 복구 메커니즘을 통해 최종 데이터 복원 성공!")
             return backup_data
         except Exception as fallback_err:
-            print("[CRITICAL] 蹂듦뎄 硫붿빱땲利섎룄 떎뙣뻽뒿땲떎. 썝蹂 뀓뒪듃:")
-            print(response.text)
+            print("[CRITICAL] 복구 메커니즘도 실패했습니다.")
             raise e
 
 # ==========================================================================
-# 썙뱶봽젅뒪 諛고룷 紐⑤뱢 (WordPress Publisher)
+# 워드프레스 배포 모듈 (WordPress Publisher)
 # ==========================================================================
 def publish_to_wordpress(editor_data):
     if WP_USER == "YOUR_WP_USERNAME" or not WP_USER:
@@ -428,10 +356,11 @@ def scan_and_process_google_drive():
         print(f"[Drive Scan WARNING] 구글 드라이브 경로('{drive_path}')가 인식되지 않습니다. 가상 드라이브 상태를 확인하세요.")
         return
         
-    # G:\내 드라이브 메인 영역에 존재하며 [Processed]가 들어가지 않은 최신 .txt 및 .md 파일 탐색
+    # G:\내 드라이브 메인 영역에 존재하며 [Processed]가 들어가지 않은 최신 .txt, .md, .docx 파일 탐색
     txt_files = glob.glob(os.path.join(drive_path, "*.txt"))
     md_files = glob.glob(os.path.join(drive_path, "*.md"))
-    all_files = txt_files + md_files
+    docx_files = glob.glob(os.path.join(drive_path, "*.docx"))
+    all_files = txt_files + md_files + docx_files
     
     target_files = []
     for fp in all_files:
@@ -703,6 +632,36 @@ def main():
     print("\n==================================================")
     print("SUCCESS 모든 에이전트 프로세스가 안전하게 성공적으로 완료되었습니다!")
     print("==================================================")
+
+def run_reviser(title, raw_content, instructions):
+    print(f"\n[Reviser] {title} 사용자 맞춤 수정 진행 중...")
+    
+    prompt = f"""
+    당신은 전문 콘텐츠 에디터입니다.
+    사용자의 특별한 수정 지시사항을 반영하여 기존 블로그 본문을 다시 작성해 주세요.
+    
+    원본 제목: "{title}"
+    사용자 수정 지시사항: "{instructions}"
+    
+    원본 본문(HTML):
+    {raw_content}
+    
+    규칙:
+    1. 사용자의 수정 지시사항을 완벽하게 반영하세요.
+    2. HTML 태그 구조를 최대한 유지하되, 내용 수정에 필요한 부분은 자연스럽게 변경하세요.
+    3. 결과물은 순수 HTML 본문 텍스트 형태로만 반환하세요.
+    """
+    
+    response = safe_generate("gemini-2.5-flash", prompt)
+    clean_text = response.text.strip()
+    if clean_text.startswith("```html"):
+        clean_text = clean_text[7:]
+    if clean_text.startswith("```"):
+        clean_text = clean_text[3:]
+    if clean_text.endswith("```"):
+        clean_text = clean_text[:-3]
+        
+    return clean_text.strip()
 
 if __name__ == "__main__":
     main()

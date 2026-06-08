@@ -3,6 +3,8 @@ import streamlit as st
 import time
 import json
 import run_agents
+run_agents.init_gemini()
+
 import os
 
 # ==========================================================================
@@ -228,15 +230,29 @@ with tab2:
     
     if st.button("🚀 구글 드라이브 스캔 시작", type="primary"):
         with st.status("구글 드라이브 스캔 중...", expanded=True) as status:
-            st.write("1. G:\내 드라이브 경로 모니터링 시작...")
-            time.sleep(1)
-            st.write("2. 최신 .txt 및 .md 메모 파일 탐색 중...")
-            time.sleep(1)
-            st.write("3. AI 분류 및 폴더 이동 로직 실행 (진행 중)...")
-            
+            log_container = st.empty()
             try:
-                # 백그라운드 함수 모방/실행
-                run_agents.scan_and_process_google_drive()
+                import sys
+                
+                class StreamlitLogRedirector:
+                    def __init__(self, st_empty_obj):
+                        self.st_empty_obj = st_empty_obj
+                        self.content = ""
+                    def write(self, text):
+                        if text:
+                            self.content += text
+                            self.st_empty_obj.code(self.content, language="bash")
+                    def flush(self):
+                        pass
+
+                old_stdout = sys.stdout
+                sys.stdout = StreamlitLogRedirector(log_container)
+                
+                try:
+                    run_agents.scan_and_process_google_drive()
+                finally:
+                    sys.stdout = old_stdout
+
                 status.update(label="스캔 완료!", state="complete", expanded=False)
                 st.success("✅ 구글 드라이브 최신 자료 스캔이 성공적으로 완료되었습니다.")
             except Exception as e:
@@ -247,11 +263,34 @@ with tab2:
     st.markdown("### 🌐 Vercel Git Sync 사용자 편의 및 안전장치")
     st.write("클릭 한 번으로 깃허브(GitHub) 동기화 및 Vercel 실시간 배포가 진행됩니다.")
     if st.button("🔄 Vercel Git Sync 배포하기"):
-        with st.spinner("GitHub 연동 및 배포 진행 중..."):
+        with st.status("GitHub 연동 및 배포 진행 중...", expanded=True) as status:
+            log_container = st.empty()
             try:
-                run_agents.sync_to_github()
+                import sys
+                
+                class StreamlitLogRedirector:
+                    def __init__(self, st_empty_obj):
+                        self.st_empty_obj = st_empty_obj
+                        self.content = ""
+                    def write(self, text):
+                        if text:
+                            self.content += text
+                            self.st_empty_obj.code(self.content, language="bash")
+                    def flush(self):
+                        pass
+
+                old_stdout = sys.stdout
+                sys.stdout = StreamlitLogRedirector(log_container)
+                
+                try:
+                    run_agents.sync_to_github()
+                finally:
+                    sys.stdout = old_stdout
+
+                status.update(label="배포 예약 완료!", state="complete", expanded=False)
                 st.success("🎉 GitHub PUSH 및 Vercel 배포가 성공적으로 예약되었습니다! (약 1~2분 후 라이브 사이트에 반영됩니다)")
             except Exception as e:
+                status.update(label="동기화 중 오류 발생", state="error")
                 st.error(f"동기화 중 오류 발생: {str(e)}")
             st.markdown("[Vercel 라이브 사이트 바로가기](https://vercel.com) 🚀")
 

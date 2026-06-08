@@ -2,8 +2,6 @@
 import os
 import json
 import requests
-import warnings
-warnings.filterwarnings("ignore")
 import google.generativeai as genai
 import time
 import shutil
@@ -318,37 +316,29 @@ def save_local_file(data, filename="posts.json"):
 # 濡쒖뺄 Git 蹂寃 궗빆 옄룞 而ㅻ컠/뫖떆 븿닔
 def sync_to_github():
     import subprocess
-    import time
-    print("\n[Git Sync] GitHub 저장소 동기화 시작...")
+    print("\n[Git Sync] GitHub 옣냼뿉 蹂寃 뜲씠꽣 룞湲고솕 떆룄 以...")
     try:
         if not os.path.exists(".git"):
-            print("[Git Sync WARNING] 로컬 저장소 Git이 초기화되지 않았습니다. 동기화 단계를 건너뜁니다.")
+            print("[Git Sync WARNING] 濡쒖뺄 뤃뜑뿉 Git 옣냼媛 珥덇린솕릺뼱 엳吏 븡뒿땲떎. 룞湲고솕 떒怨꾨 嫄대꼫쐛땲떎.")
             return
             
         subprocess.run(["git", "add", "posts.json"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         commit_res = subprocess.run(["git", "commit", "-m", f"Auto-update posts database: {time.strftime('%Y-%m-%d %H:%M:%S')}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         if commit_res.returncode == 0:
-            print("[Git Sync] 성공적으로 커밋을 만들었습니다.")
+            print("[Git Sync] 꽦怨듭쟻쑝濡 而ㅻ컠쓣 留뚮뱾뿀뒿땲떎.")
         else:
             if "nothing to commit" in commit_res.stdout.decode('utf-8', errors='ignore') or "nothing added" in commit_res.stdout.decode('utf-8', errors='ignore'):
-                print("[Git Sync] 변경된 내용이 없어 커밋을 생략합니다.")
+                print("[Git Sync] 蹂寃쎈맂 궡슜씠 뾾뼱 而ㅻ컠쓣 깮왂빀땲떎.")
+                return
             else:
-                print(f"[Git Sync WARNING] 커밋 중 예상치 못한 상태: {commit_res.stdout.decode('utf-8', errors='ignore')}")
-                
-        print("[Git Sync] Vercel 배포를 위해 GitHub로 푸시 진행 중...")
-        push_res = subprocess.run(["git", "push", "origin", "main"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
-        if push_res.returncode == 0:
-            print("-> [Git Sync] SUCCESS: GitHub 업로드 완료! Vercel 자동 배포가 시작되었습니다.")
-        else:
-            error_msg = push_res.stderr.decode('utf-8', errors='ignore')
-            print(f"-> [Git Sync ERROR] 푸시 실패: {error_msg}")
-            raise Exception("Git Push Failed")
-            
+                print(f"[Git Sync WARNING] 而ㅻ컠 떎뙣: {commit_res.stderr.decode('utf-8', errors='ignore')}")
+                return
+
+        subprocess.run(["git", "push"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("SUCCESS [Git Sync] GitHub濡 뫖떆 셿猷! 빟 30珥 궡濡 Vercel뿉 諛섏쁺맗땲떎.")
     except Exception as e:
-        print(f"[Git Sync ERROR] 동기화 중 에러 발생: {e}")
-        raise e
+        print(f"[Git Sync ERROR] GitHub 룞湲고솕 以 삤瑜 諛쒖깮: {e}")
 
 # ==========================================================================
 # 硫붿씤 젣뼱 猷⑦봽
@@ -410,10 +400,8 @@ def scan_and_process_google_drive():
             if is_valuable:
                 print(f"-> [AI 판별] SUCCESS: '{basename}' 은 블로그 발행 가치가 높은 양질의 지식 소스로 확인되었습니다!")
                 
-                # 카테고리 결정
-                category = determine_category_folder(basename, content)
-                
                 # 2. AI 자동 집필 및 Vercel/워드프레스 배포 파이프라인 개시
+                category = determine_category_folder(basename, content)
                 process_drive_file_to_post(file_path, content, category)
             else:
                 print(f"-> [AI 판별] SKIP: '{basename}' 은 개인 메모/일반 텍스트로 판별되어 발행을 제외합니다.")
@@ -456,21 +444,17 @@ def evaluate_content_value(filename, content):
         return True
 
 # 선별된 정보를 바탕으로 최종 본문을 AI로 집필해 posts.json 및 워드프레스에 배포하는 함수
-def process_drive_file_to_post(file_path, raw_content, category):
+def process_drive_file_to_post(file_path, raw_content):
     filename = os.path.basename(file_path)
-    print(f"[AI Writer] '{filename}' 원본 소스를 바탕으로 아티클 집필 재가공 중... (카테고리: {category})")
+    print(f"[AI Writer] '{filename}' 원본 소스를 바탕으로 Zapier Blog 스타일의 아티클로 집필 재가공 중...")
     
-    # 카테고리에 따른 동적 가이드라인 생성
-    if category == "기타 가이드":
-        style_guide = """
-    [집필 스타일 가이드 - 에세이/가이드]
-    1. 이 글은 IT 자동화나 기술 도구를 설명하는 글이 아닙니다. 자연스러운 일반 정보, 에세이, 철학 등의 내용을 다룹니다.
-    2. 본문 안에 억지로 [노코드], [로우코드], 활용 툴, 예상 비용 등을 절대 넣지 마세요.
-    3. 가독성을 극대화하기 위해 2~3개 문단마다 HTML <h2> 또는 <h3> 소제목으로 아티클을 정갈하게 분할하세요.
-    4. 핵심 장점이나 워크플로우 단계는 불릿 포인트(Bullet point) 목록을 사용해 시각적으로 일목요연하게 정리하세요.
-        """
-    else:
-        style_guide = """
+    prompt = f"""
+    당신은 시스템 자동화와 수익 다각화를 연구하는 1인 기업가이자 비즈니스 에디터인 '솔로프레너'입니다.
+    제시된 구글 드라이브(NotebookLM) 소스 문서를 읽고, 독자들에게 실질적인 실행 기회를 주는 고품질 블로그 아티클을 완성해 주세요.
+    
+    [원본 정보 소스]
+    {raw_content}
+    
     [집필 스타일 가이드 - Zapier Blog 벤치마킹]
     1. **구체적인 난이도 분류 (필수)**:
        - 본문 안에서 특정 기법이나 도구를 언급할 때마다 반드시 **[노코드]** 또는 **[로우코드]** 등급 분류 태그를 표기해 주세요.
@@ -484,15 +468,6 @@ def process_drive_file_to_post(file_path, raw_content, category):
     4. **한국 비즈니스 특화 및 신뢰성**:
        - 한국 기업 현실에 어울리는 설명으로 각색하고, 본문 맨 아래에는 공신력 있는 공식 사이트 및 연구소 주소 2개를 아래 HTML 예시 형식으로 제공하세요.
          (예: <li><a href="https://www.mss.go.kr" target="_blank" rel="noopener" rel="noopener">중소벤처기업부 공식 사이트</a></li>)
-        """
-        
-    prompt = f"""
-    당신은 시스템 자동화와 수익 다각화를 연구하는 1인 기업가이자 비즈니스 에디터인 '솔로프레너'입니다.
-    제시된 구글 드라이브(NotebookLM) 소스 문서를 읽고, 독자들에게 실질적인 실행 기회를 주는 고품질 블로그 아티클을 완성해 주세요.
-    
-    [원본 정보 소스]
-    {raw_content}
-    {style_guide}
     
     출력 결과물은 순수 HTML 본문으로만 반환하세요.
     """

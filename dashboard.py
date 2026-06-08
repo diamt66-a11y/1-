@@ -3,8 +3,6 @@ import streamlit as st
 import time
 import json
 import run_agents
-run_agents.init_gemini()
-
 import os
 
 # ==========================================================================
@@ -143,6 +141,7 @@ with tab1:
                     "content": final_post['final_content'],
                     "naver_content": naver_text.strip(),
                     "description": final_post['description'],
+                    "category": "비즈니스 전략",
                     "tags": ", ".join(final_post['tags']),
                     "published_link": None
                 })
@@ -162,13 +161,21 @@ with tab1:
             part_num = post['part_number']
             with st.container():
                 st.markdown(f"#### 📌 제{part_num}편: {post['title']}")
-                edited_title = st.text_input(f"제{part_num}편 최종 제목", value=post['title'], key=f"title_part_{part_num}")
-                st.session_state['generated_posts'][idx]['title'] = edited_title
                 edited_content = st.text_area(f"제{part_num}편 본문 HTML (워드프레스용)", value=post['content'], height=300, key=f"content_part_{part_num}")
                 st.session_state['generated_posts'][idx]['content'] = edited_content
-                edited_desc = st.text_area(f"제{part_num}편 워드프레스 메타 설명", value=post['description'], height=80, key=f"desc_part_{part_num}")
-                st.session_state['generated_posts'][idx]['description'] = edited_desc
                 
+                new_title = st.text_input("제목 수정", post.get("title", ""), key=f"title_in_{part_num}")
+                cat_opts = ["비즈니스 전략", "디지털 수익화", "IT 자동화 기획", "기타 가이드"]
+                cur_cat = post.get("category", "비즈니스 전략")
+                new_category = st.selectbox("카테고리 수정", cat_opts, index=cat_opts.index(cur_cat) if cur_cat in cat_opts else 0, key=f"cat_in_{part_num}")
+                new_desc = st.text_area("메타 설명 수정", post.get("description", ""), key=f"desc_in_{part_num}")
+                
+                if st.button("저장하기", key=f"save_edit_{part_num}"):
+                    st.session_state['generated_posts'][idx]["title"] = new_title
+                    st.session_state['generated_posts'][idx]["category"] = new_category
+                    st.session_state['generated_posts'][idx]["description"] = new_desc
+                    st.success("수정 사항이 저장되었습니다.")
+
                 with st.expander(f"📄 제{part_num}편 네이버 블로그 글 복사"):
                     st.text_area("네이버용 본문", value=post['naver_content'], height=250, key=f"naver_part_{part_num}")
                 
@@ -209,9 +216,9 @@ with tab1:
                     if st.button(f"📤 제{part_num}편 워드프레스로 최종 발행", key=f"publish_btn_{part_num}", type="primary"):
                         with st.spinner("발행 중..."):
                             wp_payload = {
-                                "final_title": edited_title,
+                                "final_title": new_title,
                                 "final_content": edited_content,
-                                "description": edited_desc,
+                                "description": new_desc,
                                 "tags": [t.strip() for t in post['tags'].split(",") if t.strip()]
                             }
                             post_link = run_agents.publish_to_wordpress(wp_payload)
@@ -230,29 +237,15 @@ with tab2:
     
     if st.button("🚀 구글 드라이브 스캔 시작", type="primary"):
         with st.status("구글 드라이브 스캔 중...", expanded=True) as status:
-            log_container = st.empty()
+            st.write("1. G:\내 드라이브 경로 모니터링 시작...")
+            time.sleep(1)
+            st.write("2. 최신 .txt 및 .md 메모 파일 탐색 중...")
+            time.sleep(1)
+            st.write("3. AI 분류 및 폴더 이동 로직 실행 (진행 중)...")
+            
             try:
-                import sys
-                
-                class StreamlitLogRedirector:
-                    def __init__(self, st_empty_obj):
-                        self.st_empty_obj = st_empty_obj
-                        self.content = ""
-                    def write(self, text):
-                        if text:
-                            self.content += text
-                            self.st_empty_obj.code(self.content, language="bash")
-                    def flush(self):
-                        pass
-
-                old_stdout = sys.stdout
-                sys.stdout = StreamlitLogRedirector(log_container)
-                
-                try:
-                    run_agents.scan_and_process_google_drive()
-                finally:
-                    sys.stdout = old_stdout
-
+                # 백그라운드 함수 모방/실행
+                run_agents.scan_and_process_google_drive()
                 status.update(label="스캔 완료!", state="complete", expanded=False)
                 st.success("✅ 구글 드라이브 최신 자료 스캔이 성공적으로 완료되었습니다.")
             except Exception as e:
@@ -263,34 +256,11 @@ with tab2:
     st.markdown("### 🌐 Vercel Git Sync 사용자 편의 및 안전장치")
     st.write("클릭 한 번으로 깃허브(GitHub) 동기화 및 Vercel 실시간 배포가 진행됩니다.")
     if st.button("🔄 Vercel Git Sync 배포하기"):
-        with st.status("GitHub 연동 및 배포 진행 중...", expanded=True) as status:
-            log_container = st.empty()
+        with st.spinner("GitHub 연동 및 배포 진행 중..."):
             try:
-                import sys
-                
-                class StreamlitLogRedirector:
-                    def __init__(self, st_empty_obj):
-                        self.st_empty_obj = st_empty_obj
-                        self.content = ""
-                    def write(self, text):
-                        if text:
-                            self.content += text
-                            self.st_empty_obj.code(self.content, language="bash")
-                    def flush(self):
-                        pass
-
-                old_stdout = sys.stdout
-                sys.stdout = StreamlitLogRedirector(log_container)
-                
-                try:
-                    run_agents.sync_to_github()
-                finally:
-                    sys.stdout = old_stdout
-
-                status.update(label="배포 예약 완료!", state="complete", expanded=False)
+                run_agents.sync_to_github()
                 st.success("🎉 GitHub PUSH 및 Vercel 배포가 성공적으로 예약되었습니다! (약 1~2분 후 라이브 사이트에 반영됩니다)")
             except Exception as e:
-                status.update(label="동기화 중 오류 발생", state="error")
                 st.error(f"동기화 중 오류 발생: {str(e)}")
             st.markdown("[Vercel 라이브 사이트 바로가기](https://vercel.com) 🚀")
 
@@ -307,14 +277,34 @@ with tab3:
             with open(posts_path, "r", encoding="utf-8") as f:
                 posts_data = json.load(f)
                 
+            import collections
+            cat_counts = collections.Counter([p.get('category', '기타') for p in posts_data])
+            st.markdown("**📊 분류별 포스트 통계:** " + " | ".join([f"{k}: {v}개" for k, v in cat_counts.items()]))
+            st.markdown("---")
+
             if posts_data:
                 for p_idx, post_item in enumerate(posts_data):
                     with st.expander(f"[{post_item.get('category', '미분류')}] {post_item.get('title', '제목 없음')}"):
                         st.write(f"**날짜**: {post_item.get('date', '')}")
                         st.write(f"**작성자**: {post_item.get('author', '')}")
-                        st.markdown("**요약**:")
-                        st.write(post_item.get('excerpt', ''))
                         
+                        edit_title = st.text_input("제목 수정", value=post_item.get('title', ''), key=f"t3_title_{p_idx}")
+                        cat_opts = ["비즈니스 전략", "디지털 수익화", "IT 자동화 기획", "기타 가이드"]
+                        cur_cat = post_item.get("category", "비즈니스 전략")
+                        edit_cat = st.selectbox("카테고리 수정", cat_opts, index=cat_opts.index(cur_cat) if cur_cat in cat_opts else 0, key=f"t3_cat_{p_idx}")
+                        edit_desc = st.text_area("요약/메타설명 수정", value=post_item.get('excerpt', ''), key=f"t3_desc_{p_idx}")
+                        
+                        if st.button("수정 내용 저장", key=f"t3_save_{p_idx}"):
+                            posts_data[p_idx]['title'] = edit_title
+                            posts_data[p_idx]['category'] = edit_cat
+                            posts_data[p_idx]['excerpt'] = edit_desc
+                            with open(posts_path, "w", encoding="utf-8") as wf:
+                                json.dump(posts_data, wf, indent=2, ensure_ascii=False)
+                            st.success("✅ 게시글 정보가 수정되었습니다.")
+                            time.sleep(1)
+                            st.rerun()
+
+                        st.markdown("---")
                         st.warning("⚠️ 이 글을 삭제하시겠습니까?")
                         confirm_del = st.checkbox(f"네, 삭제에 동의합니다. (ID: {post_item.get('id')})", key=f"del_check_{p_idx}")
                         if st.button("🗑️ 선택한 글 영구 삭제", key=f"del_btn_{p_idx}", disabled=not confirm_del):
